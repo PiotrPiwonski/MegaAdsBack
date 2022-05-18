@@ -55,3 +55,40 @@ test('AdRecord.findAll returns smaller amount of data.', async () => {
 
 
 });
+
+test('AdRecord.insert  returns new UUID.', async () => {
+    const ad = new AdRecord({
+        name: 'Test Name',
+        description: 'blah',
+        url: 'https://megak.pl',
+        lat: 9,
+        lon: 9,
+        price: 0,
+    });
+
+    await ad.insert();
+
+    expect(ad.id).toBeDefined();
+    expect(typeof ad.id).toBe('string');
+
+});
+
+test('AdRecord.insert  inserts data to database.', async () => {
+    const ad = new AdRecord({
+        name: 'Test Name',
+        description: 'blah',
+        url: 'https://megak.pl',
+        lat: 9,
+        lon: 9,
+        price: 0,
+    });
+
+    await ad.insert();
+
+    const foundAd = await AdRecord.getOne(ad.id);
+
+    expect(foundAd).toBeDefined();
+    expect(foundAd).not.toBeNull();
+    expect(foundAd.id).toBe(ad.id)
+
+});
